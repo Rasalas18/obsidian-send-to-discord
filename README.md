@@ -36,20 +36,22 @@ Since this plugin is not yet available in the Obsidian community plugins list, y
 ## Usage
 
 ### Send an image via right-click
-
-Right-click on any image file in the Obsidian file explorer and select **📤 Send to Discord**.
+Right-click on any image file in the Obsidian file explorer and select **Send to Discord**.
 
 ### Send an image via command palette
-
 1. Open the command palette (`Ctrl+P`)
-2. Search for **Choose and send image to Discord**
-3. A fuzzy search modal will open with all images in your vault
-4. Select the image you want to send
+2. Search for **Send to Discord: Choose and send image**
+3. Select the image you want to send
 
-### Send selected text
-
+### Send selected text via command palette
 1. Select any text in a note
-2. Right-click and select **Send to Discord**
+2. Open the command palette (`Ctrl+P`)
+3. Search for **Send to Discord: Send selected text**
+
+### Type and send custom text
+1. Open the command palette (`Ctrl+P`)
+2. Search for **Send to Discord: Type and send text**
+3. Type your message and click **Send**
 
 ## Requirements
 
