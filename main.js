@@ -1,4 +1,4 @@
-const { Plugin, Notice, TFile, FileSystemAdapter, PluginSettingTab, Setting, FuzzySuggestModal } = require("obsidian");
+const { Plugin, Notice, TFile, FileSystemAdapter, PluginSettingTab, Setting, FuzzySuggestModal, Modal } = require("obsidian");
 const path = require("path");
 const fs = require("fs");
 const https = require("https");
@@ -10,7 +10,7 @@ const DEFAULT_SETTINGS = {
   webhookUrl: ""
 };
 
-// --- Send to Discord webhook ---
+// --- Send image to Discord webhook ---
 async function sendToWebhook(webhookUrl, imagePath) {
   return new Promise((resolve, reject) => {
     const filename = path.basename(imagePath);
@@ -116,6 +116,39 @@ class ImageSuggester extends FuzzySuggestModal {
   onChooseItem(item) { this.onChoose(item.path); }
 }
 
+// --- Text Modal ---
+class TextModal extends Modal {
+  constructor(app, onSubmit) {
+    super(app);
+    this.onSubmit = onSubmit;
+  }
+
+  onOpen() {
+    const { contentEl } = this;
+    contentEl.createEl("h3", { text: "Send text to Discord" });
+
+    const input = contentEl.createEl("textarea", {
+      attr: {
+        placeholder: "Type your message...",
+        rows: 5,
+        style: "width:100%; resize:vertical; margin-top:8px;"
+      }
+    });
+
+    const btn = contentEl.createEl("button", { text: "Send" });
+    btn.style.marginTop = "12px";
+    btn.onclick = () => {
+      const text = input.value.trim();
+      this.close();
+      if (text) this.onSubmit(text);
+    };
+  }
+
+  onClose() {
+    this.contentEl.empty();
+  }
+}
+
 // --- Settings Tab ---
 class SendToDiscordSettingTab extends PluginSettingTab {
   constructor(app, plugin) {
@@ -183,11 +216,34 @@ module.exports = class SendToDiscordPlugin extends Plugin {
       })
     );
 
-    // Command palette
+    // Command palette - send image
     this.addCommand({
-      id: "send-image-to-discord",
-      name: "Choose and send image to Discord",
+      id: "send-to-discord-image",
+      name: "Choose and send image",
       callback: () => this.openSuggester()
+    });
+
+    // Command palette - send selected text
+    this.addCommand({
+      id: "send-to-discord-selection",
+      name: "Send selected text",
+      editorCallback: (editor) => {
+        const selection = editor.getSelection();
+        if (!selection) {
+          new Notice("❌ No text selected!");
+          return;
+        }
+        this.sendText(selection);
+      }
+    });
+
+    // Command palette - type and send text
+    this.addCommand({
+      id: "send-to-discord-text",
+      name: "Type and send text",
+      callback: () => {
+        new TextModal(this.app, (text) => this.sendText(text)).open();
+      }
     });
 
     console.log("Send to Discord loaded.");
