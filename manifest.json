@@ -1,9 +1,9 @@
 {
   "id": "send-to-discord",
-  "name": "Send Image to Discord",
+  "name": "Send to Discord",
   "version": "2.0.0",
   "minAppVersion": "1.0.0",
-  "description": "Send images to Discord via webhook.",
+  "description": "Send images and text to Discord via webhook.",
   "author": "Rasalas",
   "isDesktopOnly": true
 }

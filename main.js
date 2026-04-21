@@ -10,7 +10,7 @@ const DEFAULT_SETTINGS = {
   webhookUrl: ""
 };
 
-// --- Send image to Discord webhook ---
+// --- Send to Discord webhook ---
 async function sendToWebhook(webhookUrl, imagePath) {
   return new Promise((resolve, reject) => {
     const filename = path.basename(imagePath);
@@ -126,7 +126,7 @@ class SendToDiscordSettingTab extends PluginSettingTab {
   display() {
     const { containerEl } = this;
     containerEl.empty();
-    containerEl.createEl("h2", { text: "Send Image to Discord" });
+    containerEl.createEl("h2", { text: "Send to Discord" });
 
     new Setting(containerEl)
       .setName("Webhook URL")
