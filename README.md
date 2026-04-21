@@ -49,7 +49,7 @@ Right-click on any image file in the Obsidian file explorer and select **📤 Se
 ### Send selected text
 
 1. Select any text in a note
-2. Right-click and select **📤 Send to Discord**
+2. Right-click and select **Send to Discord**
 
 ## Requirements
 
